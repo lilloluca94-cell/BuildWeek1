@@ -170,40 +170,47 @@ if (document.getElementById("timer-container")) {
   });
 }
 
-// inserimento form
-//<label>
-// <input type="radio" name="domanda4" value="social" required> 
-// Social Media --dentro label
-// </label>
+let currentQuestion = 0;
+const questionContainer = document.getElementById("question");
+const countEl = document.getElementById("countquestion");
+const nextBtn = document.getElementById("next-btn");
 
-//selezione contenitore question
-const questionContainer = document.getElementById("question")
+function createQuestion() {
+  const currentQ = questions[currentQuestion];
 
-//selezione contenitore
-const containerAnswar = document.getElementById("answer")
+  // mostra a schermo la dommanda 
+  if (questionContainer) {
+    questionContainer.innerHTML = `<h2>${currentQ.question}</h2>`;
+  }
 
-//selezione contatore 
-const questionCount = document.getElementById("countquestion")
-
-//creazione h2 per domanda
-const h2Question = document.createElement("h2")
-questionContainer.appendChild(h2Question)
-
-
-/*
-if (questionContainer && containerAnswar) {
-  let currentIndex = 0
-  let score = 0
-  function showQuestion() {
-    const currentU = questions[currentIndex]
-    questionContainer.innerHTML = `<h2>${currentQ.question}</h2>`
+  // aggiornamento contatore
+  if (countEl) {
+    countEl.innerHTML = `QUESTION ${currentQuestion + 1} <span>/ ${questions.length}</span>`;
   }
 }
-*/
 
-createQuestionTitle()
-
-function createQuestionTitle() {
-  h2Question.innerText = questions[0].question
+function incrementCurrentQuestion() {
+  if (currentQuestion < questions.length - 1) {
+    currentQuestion++;
+    createQuestion(); // Mostra la domanda successiva
+    startTimer(incrementCurrentQuestion); // Fa ripartire il tuo timer da 30
+  } else {
+    stopTimer(); // ferma timer 10 domanda
+    if (questionContainer) {
+      questionContainer.innerHTML = `<h2>Quiz completato!</h2>`;
+    }
+    if (nextBtn) {
+      nextBtn.style.display = "none";
+    }
+  }
 }
 
+// avvio timer nella seconda pagina
+if (questionContainer) {
+  createQuestion();
+  startTimer(incrementCurrentQuestion);
+
+  if (nextBtn) {
+    nextBtn.addEventListener("click", incrementCurrentQuestion);
+  }
+}
