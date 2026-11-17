@@ -169,5 +169,47 @@ if (document.getElementById("timer-container")) {
     startTimer();
   });
 }
+let currentQuestion = 0;
+const questionContainer = document.getElementById("question");
+const countEl = document.getElementById("countquestion");
+const nextBtn = document.getElementById("next-btn");
 
-  
+function createQuestion() {
+  const currentQ = questions[currentQuestion];
+
+  //testo della domanda
+  if (questionContainer) {
+    questionContainer.innerHTML = `<h2>${currentQ.question}</h2>`;
+  }
+
+  // Aggiorna il contatore QUESTION 
+  if (countEl) {
+    countEl.innerHTML = `QUESTION ${currentQuestion + 1} <span>/ ${questions.length}</span>`;
+  }
+}
+
+function incrementCurrentQuestion() {
+  if (currentQuestion < questions.length - 1) {
+    currentQuestion++;
+    createQuestion(); //  domanda successiva
+    startTimer(incrementCurrentQuestion); // ripartire timer da 30
+  } else {
+    stopTimer(); // Ferma  timer 
+    if (questionContainer) {
+      questionContainer.innerHTML = `<h2>Quiz completato!</h2>`;
+    }
+    if (nextBtn) {
+      nextBtn.style.display = "none";
+    }
+  }
+}
+
+// avvio automatico quando ci si trova nella seconda pagina
+if (questionContainer) {
+  createQuestion();
+  startTimer(incrementCurrentQuestion);
+
+  if (nextBtn) {
+    nextBtn.addEventListener("click", incrementCurrentQuestion);
+  }
+}
