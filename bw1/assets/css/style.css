@@ -32,9 +32,9 @@ header {
 }
 
 #logo img {
-    width: 165px ;
-    max-width: 165px ;
-    height: auto ;
+    width: 165px;
+    max-width: 165px;
+    height: auto;
     display: block;
 }
 
@@ -96,25 +96,49 @@ main {
     width: 100%;
 }
 
-#promise p {
+#promise {
     display: flex;
     align-items: center;
     gap: 14px;
-    font-size: 15px;
-    font-weight: 600;
-    color: #ffffff;
-    cursor: pointer;
-    user-select: none;
 }
 
-#promise p::before {
-    content: "";
-    display: inline-block;
+#promise input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
     width: 18px;
     height: 18px;
     border: 2px solid #ffffff;
     background-color: transparent;
+    border-radius: 0;
+    cursor: pointer;
     flex-shrink: 0;
+    position: relative;
+    margin: 0;
+}
+
+#promise input[type="checkbox"]:checked::after {
+    content: "";
+    position: absolute;
+    left: 4px;
+    top: 0px;
+    width: 5px;
+    height: 10px;
+    border: solid #00FFFF;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+#promise p,
+#promise label {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #ffffff;
+    cursor: pointer;
+    user-select: none;
+    margin: 0;
 }
 
 #proceed button {
