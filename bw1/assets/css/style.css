@@ -7,7 +7,7 @@
 }
 
  body {
-    background-image: url("/BuildWeek/BW1/bw1/assets/img/bg.jpg");
+    background-image: url("/bw1/assets/img/bg.jpg");
     background-repeat: no-repeat;
     background-size: cover;
     width: 100%;
@@ -27,4 +27,5 @@ header {
 #logo img {
     width: 100%;
     height: 100%;
+    padding: 70px;
 }
