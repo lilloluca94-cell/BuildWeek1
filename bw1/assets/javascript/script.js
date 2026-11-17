@@ -97,3 +97,30 @@
         incorrect_answers: ["Python", "C", "Jakarta"],
       },
     ];
+
+    //consenso per procedere alla scenda paggina
+    const checkbox = document.getElementById("boxPromise");
+    const proceedBtn = document.querySelector("#proceed button");
+    if (checkbox && proceedBtn) {
+      proceedBtn.disabled = true;
+      proceedBtn.style.opacity = "0.5";
+      proceedBtn.style.cursor = "not-allowed";
+    }
+    checkbox.addEventListener("change",function() {
+      if (checkbox.checked) {
+        proceedBtn.disabled = false;
+        proceedBtn.style.opacity ="1";
+        proceedBtn.style.cursor ="pointer";
+      } else {
+        proceedBtn.disabled = true;
+            proceedBtn.style.opacity = "0.5";
+            proceedBtn.style.cursor = "not-allowed";
+      }
+    });
+    proceedBtn.addEventListener("click", function() {
+      if(checkbox.checked) {
+        window.location.href = "./secondapagina.html";
+      }
+    });
+    
+  
