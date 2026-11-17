@@ -25,7 +25,16 @@ body {
 
 }
 header {
+    margin-bottom: 65px;
+    width: 100%;
+}
+#logo {
     width: 165px;
+}
+
+#logo img {
+    width: 165px;
+    max-width: 165px;
     height: auto;
     display: block;
 }
