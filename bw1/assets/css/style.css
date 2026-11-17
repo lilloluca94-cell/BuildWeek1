@@ -1,15 +1,13 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Outfit:wght@400;600;700&display=swap');
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-
-
-
 body {
     background-image: url('../img/bg.jpg');
-
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -17,73 +15,83 @@ body {
     color: #ffffff;
     font-family: 'Inter', sans-serif;
     font-size: 16px;
-    padding: 45px 100px;
+    padding: 45px 110px;
     display: flex;
     flex-direction: column;
-
 }
+
 header {
-    margin-bottom: 65px;
+    margin-bottom: 70px;
     width: 100%;
 }
+
 #logo {
     width: 165px;
 }
 
 #logo img {
-    width: 165px;
-    max-width: 165px;
-    height: auto;
+    width: 165px !important;
+    max-width: 165px !important;
+    height: auto !important;
     display: block;
 }
+
 main {
     flex: 1;
     display: flex;
     flex-direction: column;
     justify-content: center;
 }
+
 #mainpage {
     width: 100%;
-
-    height: 100%;
-    padding: 70px;
+    max-width: 1150px;
 }
 
 #title h1 {
     font-family: 'Outfit', sans-serif;
-    font-size: 60px;
+    font-size: 72px;
     font-weight: 600;
-    line-height: 0.95;
-    max-width: 410px;
-    margin-bottom: 40px;
-    letter-spacing: -1px;
+    line-height: 0.92;
+    max-width: 460px;
+    margin-bottom: 45px;
+    letter-spacing: -1.5px;
 }
+
 #instruction h3 {
     font-family: 'Outfit', sans-serif;
     color: #D20094;
-    font-size: 28px;
+    font-size: 30px;
     font-weight: 700;
     margin-bottom: 12px;
 }
-#istruction p {
+
+#instruction p {
     font-size: 16px;
     line-height: 1.5;
     color: #e6e6e6;
-    max-width: 540px;
-    margin-bottom: 32px;
-
+    max-width: 460px;
+    margin-bottom: 38px;
 }
-#istruction ul li {
+
+#instruction ul {
+    padding-left: 22px;
+    margin-bottom: 85px;
+}
+
+#instruction ul li {
     font-size: 16px;
-    line-height: 1.8;
+    line-height: 1.85;
     color: #e6e6e6;
 }
+
 #bottom {
-   display: flex;
+    display: flex;
     justify-content: space-between;
     align-items: center;
     width: 100%;
 }
+
 #promise p {
     display: flex;
     align-items: center;
@@ -93,6 +101,7 @@ main {
     cursor: pointer;
     user-select: none;
 }
+
 #promise p::before {
     content: "";
     display: inline-block;
@@ -102,26 +111,26 @@ main {
     background-color: transparent;
     flex-shrink: 0;
 }
+
 #proceed button {
     background-color: #00FFFF;
     color: #0b113a;
     font-family: 'Outfit', sans-serif;
-    font-size: 18px;
+    font-size: 19px;
     font-weight: 700;
     letter-spacing: 0.5px;
-    padding: 18px 62px;
+    padding: 20px 68px;
     border: none;
     cursor: pointer;
-    box-shadow: 0 0 28px rgba(0, 255, 255, 0.65);
+    box-shadow: 0 0 30px rgba(0, 255, 255, 0.7);
     transition: transform 0.15s ease, box-shadow 0.2s ease;
 }
+
 #proceed button:hover {
     transform: translateY(-2px);
-    box-shadow: 0 0 38px rgba(0, 255, 255, 0.9);
+    box-shadow: 0 0 40px rgba(0, 255, 255, 0.95);
 }
 
 #proceed button:active {
     transform: translateY(0);
 }
-
-
