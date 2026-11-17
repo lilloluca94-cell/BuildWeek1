@@ -99,28 +99,75 @@
     ];
 
     //consenso per procedere alla scenda paggina
-    const checkbox = document.getElementById("boxPromise");
-    const proceedBtn = document.querySelector("#proceed button");
-    if (checkbox && proceedBtn) {
+const checkbox = document.getElementById("boxPromise");
+const proceedBtn = document.querySelector("#proceed button");
+
+if (checkbox && proceedBtn) {
+  proceedBtn.disabled = true;
+  proceedBtn.style.opacity = "0.5";
+  proceedBtn.style.cursor = "not-allowed";
+
+  checkbox.addEventListener("change", function () {
+    if (checkbox.checked) {
+      proceedBtn.disabled = false;
+      proceedBtn.style.opacity = "1";
+      proceedBtn.style.cursor = "pointer";
+    } else {
       proceedBtn.disabled = true;
       proceedBtn.style.opacity = "0.5";
       proceedBtn.style.cursor = "not-allowed";
     }
-    checkbox.addEventListener("change",function() {
-      if (checkbox.checked) {
-        proceedBtn.disabled = false;
-        proceedBtn.style.opacity ="1";
-        proceedBtn.style.cursor ="pointer";
-      } else {
-        proceedBtn.disabled = true;
-            proceedBtn.style.opacity = "0.5";
-            proceedBtn.style.cursor = "not-allowed";
-      }
-    });
-    proceedBtn.addEventListener("click", function() {
-      if(checkbox.checked) {
-        window.location.href = "./secondapagina.html";
-      }
-    });
-    
+  });
+
+  proceedBtn.addEventListener("click", function () {
+    if (checkbox.checked) {
+      window.location.href = "./secondapagina.html";
+    }
+  });
+}
+
+// TIMER
+let timeLeft = 30;
+let timerInterval;
+const circleLength = 339.29;
+
+function startTimer(onTimeUp) {
+  clearInterval(timerInterval);
+  timeLeft = 30;
+
+  const numberEl = document.getElementById("timer-number");
+  const circleEl = document.getElementById("timer-circle");
+
+  if (numberEl) numberEl.textContent = timeLeft;
+  if (circleEl) circleEl.style.strokeDashoffset = 0;
+
+  timerInterval = setInterval(function () {
+    timeLeft--;
+
+    if (numberEl) numberEl.textContent = timeLeft;
+
+    if (circleEl) {
+      const offset = circleLength * (1 - timeLeft / 30);
+      circleEl.style.strokeDashoffset = offset;
+    }
+
+    if (timeLeft <= 0) {
+      clearInterval(timerInterval);
+      if (onTimeUp) onTimeUp();
+    }
+  }, 1000);
+}
+
+function stopTimer() {
+  clearInterval(timerInterval);
+}
+
+// Avvia automaticamente il timer quando ci si trova nella seconda pagina
+if (document.getElementById("timer-container")) {
+  startTimer(function () {
+    // Inserire funzione per passare prossima domanda
+    startTimer();
+  });
+}
+
   

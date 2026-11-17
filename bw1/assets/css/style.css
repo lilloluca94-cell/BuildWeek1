@@ -183,3 +183,59 @@ main {
 #proceed button:active {
     transform: translateY(0);
 }
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#timer-container {
+    position: relative;
+    width: 130px;
+    height: 130px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.timer-svg {
+    transform: rotate(-90deg);
+}
+
+.timer-bg {
+    fill: none;
+    stroke: rgba(255, 255, 255, 0.2);
+    stroke-width: 12;
+}
+
+.timer-progress {
+    fill: none;
+    stroke: #00FFFF;
+    stroke-width: 12;
+    stroke-dasharray: 339.29;
+    stroke-dashoffset: 0;
+    transition: stroke-dashoffset 1s linear;
+}
+
+.timer-text {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.timer-label {
+    font-size: 9px;
+    font-weight: 600;
+    color: #e6e6e6;
+}
+
+#timer-number {
+    font-family: 'Outfit', sans-serif;
+    font-size: 40px;
+    font-weight: 600;
+    line-height: 1.05;
+    color: #ffffff;
+}
