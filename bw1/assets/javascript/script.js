@@ -169,7 +169,6 @@ if (document.getElementById("timer-container")) {
     startTimer();
   });
 }
-
 let currentQuestion = 0;
 const questionContainer = document.getElementById("question");
 const countEl = document.getElementById("countquestion");
@@ -178,12 +177,12 @@ const nextBtn = document.getElementById("next-btn");
 function createQuestion() {
   const currentQ = questions[currentQuestion];
 
-  // mostra a schermo la dommanda 
+  //testo della domanda
   if (questionContainer) {
     questionContainer.innerHTML = `<h2>${currentQ.question}</h2>`;
   }
 
-  // aggiornamento contatore
+  // Aggiorna il contatore QUESTION 
   if (countEl) {
     countEl.innerHTML = `QUESTION ${currentQuestion + 1} <span>/ ${questions.length}</span>`;
   }
@@ -192,10 +191,10 @@ function createQuestion() {
 function incrementCurrentQuestion() {
   if (currentQuestion < questions.length - 1) {
     currentQuestion++;
-    createQuestion(); // Mostra la domanda successiva
-    startTimer(incrementCurrentQuestion); // Fa ripartire il tuo timer da 30
+    createQuestion(); //  domanda successiva
+    startTimer(incrementCurrentQuestion); // ripartire timer da 30
   } else {
-    stopTimer(); // ferma timer 10 domanda
+    stopTimer(); // Ferma  timer 
     if (questionContainer) {
       questionContainer.innerHTML = `<h2>Quiz completato!</h2>`;
     }
@@ -205,7 +204,7 @@ function incrementCurrentQuestion() {
   }
 }
 
-// avvio timer nella seconda pagina
+// avvio automatico quando ci si trova nella seconda pagina
 if (questionContainer) {
   createQuestion();
   startTimer(incrementCurrentQuestion);
