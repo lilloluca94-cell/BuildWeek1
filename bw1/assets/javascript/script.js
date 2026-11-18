@@ -103,15 +103,15 @@ const checkbox = document.getElementById("boxPromise");
 const proceedBtn = document.querySelector("#proceed button");
 
 if (checkbox && proceedBtn) {
- proceedBtn.disabled = true;
- checkbox.addEventListener("change",function(){
-  proceedBtn.disabled = !checkbox.checked;
- });
- proceedBtn.addEventListener("click", function(){
-  if (checkbox.checked) {
-    window.location.href = "./secondapagina.html";
-  }
- });
+  proceedBtn.disabled = true;
+  checkbox.addEventListener("change", function () {
+    proceedBtn.disabled = !checkbox.checked;
+  });
+  proceedBtn.addEventListener("click", function () {
+    if (checkbox.checked) {
+      window.location.href = "./secondapagina.html";
+    }
+  });
 }
 // timer e domande 
 let timeLeft = 30;
@@ -133,22 +133,22 @@ function startTimer(onTimeUp) {
     timeLeft--;
     if (numberEl) numberEl.textContent = timeLeft;
     if (circleEl) {
-    const offset = circleLength * (1 - timeLeft / 30);
+      const offset = circleLength * (1 - timeLeft / 30);
       circleEl.style.strokeDashoffset = offset;
     }
     if (timeLeft <= 0) {
       clearInterval(timerInterval);
       if (onTimeUp) onTimeUp();
-    } 
-},1000);
+    }
+  }, 1000);
 }
 function stopTimer() {
   clearInterval(timerInterval);
 }
 if (numberEl) {
-  startTimer(function() {
+  startTimer(function () {
     console.log("Tempo scaduto!");
-    });
+  });
 }
 // domande 
 function createQuestion() {
@@ -165,9 +165,9 @@ function createQuestion() {
 function incrementCurrentQuestion() {
   if (currentQuestion < questions.length - 1) {
     currentQuestion++;
-    createQuestion(); 
+    createQuestion();
     startTimer(incrementCurrentQuestion);
-    } else {
+  } else {
     stopTimer(); // Ferma il timer all'ultima domanda
     if (questionContainer) {
       questionContainer.innerHTML = `<h2>Quiz completato!</h2>`;
@@ -181,12 +181,72 @@ if (questionContainer) {
   createQuestion();
   startTimer(incrementCurrentQuestion);
   if (nextBtn) {
-    nextBtn.addEventListener("click",incrementCurrentQuestion);
+    nextBtn.addEventListener("click", incrementCurrentQuestion);
   }
 }
 
-// restanti da fare metter le risposte sotto la domanda 
-//randomizzare l ordine delle risposte
+
+
+
+//CREAZIONE RANDOMICA DEI PULSANTE - LUIGI
+//
+//
+
+//array test per risposte DA SOSTITUIRE CON QUELLO CORRETTO
+let arrQuestion = ["risposta1", "risposta2", "risposta3", "risposta4"]
+
+
+//selezione form input
+const inputClick = document.getElementsByClassName("inputClick")
+
+
+
+//randomizzare arrQuestion
+function randomIndex() {
+  const shuflleArray = (array) => {
+    array.sort(() => Math.random() - 0.5)
+  }
+  return shuflleArray(arrQuestion)
+}
+
+//selezione del contenitore delle domande
+const answerContainer = document.getElementById("answer")
+
+//creazione form e inserimento
+const form = document.createElement("form")
+answerContainer.appendChild(form)
+
+//richiamo funzione per generare domande
+questionCreate()
+
+//funzione per generazione domande
+function questionCreate() {
+  randomIndex()
+  form.innerHTML = ""
+  for (i = 0; i < arrQuestion.length; i++) {
+    //creazione e valorizzazione pulsanti
+    const input = document.createElement("input")
+    input.type = "radio"
+    input.value = arrQuestion[i]
+    input.id = arrQuestion[i]
+    input.name = "question"
+    input.classList.add("inputClick")
+    //creazione label
+    const label = document.createElement("label")
+    label.innerText = arrQuestion[i]
+    label.id = arrQuestion[i]
+
+    //aggiunta evento click
+    input.addEventListener("click", questionCreate)
+
+    form.appendChild(input)
+    form.appendChild(label)
+
+  }
+}
+
+
+// restanti da fare metter le risposte sotto la domanda
 // stilizzare tramite il css la seconda pagina quindi la parte del quiz
 //mostrare tutte le domande a fine ed evidenziare quelle sbagliate mostrando la risposta giust
 
