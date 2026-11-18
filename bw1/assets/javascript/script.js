@@ -213,3 +213,70 @@ if (questionContainer) {
     nextBtn.addEventListener("click", incrementCurrentQuestion);
   }
 }
+
+//CREAZIONE RANDOMICA DEI PULSANTE - LUIGI
+//
+//
+
+//array test per risposte DA SOSTITUIRE CON QUELLO CORRETTO
+let arrQuestion = ["risposta1", "risposta2", "risposta3", "risposta4"]
+
+
+//selezione form input
+const inputClick = document.getElementsByClassName("inputClick")
+
+
+
+//randomizzare arrQuestion
+function randomIndex() {
+  const shuflleArray = (array) => {
+    array.sort(() => Math.random() - 0.5)
+  }
+  return shuflleArray(arrQuestion)
+}
+
+//selezione del contenitore delle domande
+const answerContainer = document.getElementById("answer")
+
+//creazione form e inserimento
+const form = document.createElement("form")
+answerContainer.appendChild(form)
+
+//richiamo funzione per generare domande
+questionCreate()
+
+//funzione per generazione domande
+function questionCreate() {
+  randomIndex()
+  form.innerHTML = ""
+  for (i = 0; i < arrQuestion.length; i++) {
+    //creazione e valorizzazione pulsanti
+    const input = document.createElement("input")
+    input.type = "radio"
+    input.value = arrQuestion[i]
+    input.id = arrQuestion[i]
+    input.name = "question"
+    input.classList.add("inputClick")
+    //creazione label
+    const label = document.createElement("label")
+    label.innerText = arrQuestion[i]
+    label.id = arrQuestion[i]
+
+    //aggiunta evento click
+    input.addEventListener("click", questionCreate)
+
+    form.appendChild(input)
+    form.appendChild(label)
+
+  }
+}
+
+
+
+
+
+
+
+
+
+
