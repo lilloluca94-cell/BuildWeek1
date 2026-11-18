@@ -103,114 +103,89 @@ const checkbox = document.getElementById("boxPromise");
 const proceedBtn = document.querySelector("#proceed button");
 
 if (checkbox && proceedBtn) {
-  proceedBtn.disabled = true;
-  proceedBtn.style.opacity = "0.5";
-  proceedBtn.style.cursor = "not-allowed";
-
-  checkbox.addEventListener("change", function () {
-    if (checkbox.checked) {
-      proceedBtn.disabled = false;
-      proceedBtn.style.opacity = "1";
-      proceedBtn.style.cursor = "pointer";
-    } else {
-      proceedBtn.disabled = true;
-      proceedBtn.style.opacity = "0.5";
-      proceedBtn.style.cursor = "not-allowed";
-    }
-  });
-
-  proceedBtn.addEventListener("click", function () {
-    if (checkbox.checked) {
-      window.location.href = "./secondapagina.html";
-    }
-  });
+ proceedBtn.disabled = true;
+ checkbox.addEventListener("change",function(){
+  proceedBtn.disabled = !checkbox.checked;
+ });
+ proceedBtn.addEventListener("click", function(){
+  if (checkbox.checked) {
+    window.location.href = "./secondapagina.html";
+  }
+ });
 }
-
-// TIMER
+// timer e domande 
 let timeLeft = 30;
 let timerInterval;
 const circleLength = 339.29;
-
-function startTimer(onTimeUp) {
-  clearInterval(timerInterval);
-  timeLeft = 30;
-
-  const numberEl = document.getElementById("timer-number");
-  const circleEl = document.getElementById("timer-circle");
-
-  if (numberEl) numberEl.textContent = timeLeft;
-  if (circleEl) circleEl.style.strokeDashoffset = 0;
-
-  timerInterval = setInterval(function () {
-    timeLeft--;
-
-    if (numberEl) numberEl.textContent = timeLeft;
-
-    if (circleEl) {
-      const offset = circleLength * (1 - timeLeft / 30);
-      circleEl.style.strokeDashoffset = offset;
-    }
-
-    if (timeLeft <= 0) {
-      clearInterval(timerInterval);
-      if (onTimeUp) onTimeUp();
-    }
-  }, 1000);
-}
-
-function stopTimer() {
-  clearInterval(timerInterval);
-}
-
-// Avvia automaticamente il timer quando ci si trova nella seconda pagina
-if (document.getElementById("timer-container")) {
-  startTimer(function () {
-    // Inserire funzione per passare prossima domanda
-    startTimer();
-  });
-}
-
 let currentQuestion = 0;
 const questionContainer = document.getElementById("question");
 const countEl = document.getElementById("countquestion");
 const nextBtn = document.getElementById("next-btn");
-
+const numberEl = document.getElementById("timer-number");
+const circleEl = document.getElementById("timer-circle");
+// funzione timer
+function startTimer(onTimeUp) {
+  clearInterval(timerInterval);
+  timeLeft = 30;
+  if (numberEl) numberEl.textContent = timeLeft;
+  if (circleEl) circleEl.style.strokeDashoffset = 0;
+  timerInterval = setInterval(function () {
+    timeLeft--;
+    if (numberEl) numberEl.textContent = timeLeft;
+    if (circleEl) {
+    const offset = circleLength * (1 - timeLeft / 30);
+      circleEl.style.strokeDashoffset = offset;
+    }
+    if (timeLeft <= 0) {
+      clearInterval(timerInterval);
+      if (onTimeUp) onTimeUp();
+    } 
+},1000);
+}
+function stopTimer() {
+  clearInterval(timerInterval);
+}
+if (numberEl) {
+  startTimer(function() {
+    console.log("Tempo scaduto!");
+    });
+}
+// domande 
 function createQuestion() {
   const currentQ = questions[currentQuestion];
-
-  // mostra a schermo la dommanda 
   if (questionContainer) {
     questionContainer.innerHTML = `<h2>${currentQ.question}</h2>`;
   }
 
-  // aggiornamento contatore
   if (countEl) {
     countEl.innerHTML = `QUESTION ${currentQuestion + 1} <span>/ ${questions.length}</span>`;
   }
 }
-
+//function prossima domanda 
 function incrementCurrentQuestion() {
   if (currentQuestion < questions.length - 1) {
     currentQuestion++;
-    createQuestion(); // Mostra la domanda successiva
-    startTimer(incrementCurrentQuestion); // Fa ripartire il tuo timer da 30
-  } else {
-    stopTimer(); // ferma timer 10 domanda
+    createQuestion(); 
+    startTimer(incrementCurrentQuestion);
+    } else {
+    stopTimer(); // Ferma il timer all'ultima domanda
     if (questionContainer) {
       questionContainer.innerHTML = `<h2>Quiz completato!</h2>`;
     }
     if (nextBtn) {
-      nextBtn.style.display = "none";
+      nextBtn.classList.add("hidden");
     }
   }
 }
-
-// avvio timer nella seconda pagina
 if (questionContainer) {
   createQuestion();
   startTimer(incrementCurrentQuestion);
-
   if (nextBtn) {
-    nextBtn.addEventListener("click", incrementCurrentQuestion);
+    nextBtn.addEventListener("click",incrementCurrentQuestion);
   }
 }
+
+// restanti da fare metter le risposte sotto la domanda 
+//randomizzare l ordine delle risposte
+// stilizzare tramite il css la seconda pagina quindi la parte del quiz
+//mostrare tutte le domande a fine ed evidenziare quelle sbagliate mostrando la risposta giusta 
