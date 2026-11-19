@@ -251,3 +251,74 @@ function questionCreate() {
 //mostrare tutte le domande a fine ed evidenziare quelle sbagliate mostrando la risposta giust
 
 
+const answerContainer = document.getElementById("answer");
+//La funzione questionCreate() prende la domanda corrente (currentQ) dalla lista questions
+function questionCreate() {
+    const currentQ = questions[currentQuestion];
+
+    // Unisce risposta corretta e sbagliate
+    let answers = [
+        currentQ.correct_answer,
+        ...currentQ.incorrect_answers
+    ];
+
+    // Mescola le risposte
+    answers.sort(() => Math.random() - 0.5);
+
+    // Svuota il contenitore
+    answerContainer.innerHTML = "";
+
+    // Crea i pulsanti
+    answers.forEach((answer, index) => {
+
+        const input = document.createElement("input");
+
+        input.type = "radio";
+        input.name = "answer";
+        input.value = answer;
+        input.id = `answer${index}`;
+
+        const label = document.createElement("label");
+
+        label.htmlFor = input.id;
+        label.textContent = answer;
+
+        // Inserisce gli elementi
+        answerContainer.appendChild(input);
+        answerContainer.appendChild(label);
+    });
+}
+function createQuestion() {
+    const currentQ = questions[currentQuestion];
+
+    questionContainer.innerHTML =
+        `<h2>${currentQ.question}</h2>`;
+
+    countEl.innerHTML =
+        `QUESTION ${currentQuestion + 1} <span>/ ${questions.length}</span>`;
+
+    questionCreate();
+}
+let userAnswers = [];
+input.addEventListener("change", function() {
+
+    userAnswers[currentQuestion] = input.value;
+
+});
+//La funzione checkAnswer() confronta la risposta data dall’utente (userAnswer) 
+// con quella corretta (correctAnswer), 
+// e stampa sulla console se la risposta è corretta o sbagliata.
+function checkAnswer() {
+
+    const correctAnswer =
+        questions[currentQuestion].correct_answer;
+
+    const userAnswer =
+        userAnswers[currentQuestion];
+
+    if (userAnswer === correctAnswer) {
+        console.log("Risposta corretta!");
+    } else {
+        console.log("Risposta sbagliata!");
+    }
+}
