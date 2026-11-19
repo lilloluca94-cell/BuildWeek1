@@ -250,75 +250,137 @@ function questionCreate() {
 // stilizzare tramite il css la seconda pagina quindi la parte del quiz
 //mostrare tutte le domande a fine ed evidenziare quelle sbagliate mostrando la risposta giust
 
+let score = 0;
+let userAnswers = []; // Salva la risposta data per ogni indice di domanda
 
-//const answerContainer = document.getElementById("answer");
-//La funzione questionCreate() prende la domanda corrente (currentQ) dalla lista questions
 function questionCreate() {
-    const currentQ = questions[currentQuestion];
+  const currentQ = questions[currentQuestion];
 
-    // Unisce risposta corretta e sbagliate
-    let answers = [
-        currentQ.correct_answer,
-        ...currentQ.incorrect_answers
-    ];
+  // Unisce risposta corretta e sbagliate e le mescola
+  const answers = [currentQ.correct_answer, ...currentQ.incorrect_answers];
+  answers.sort(() => Math.random() - 0.5);
 
-    // Mescola le risposte
-    answers.sort(() => Math.random() - 0.5);
+  // Svuota il contenitore delle risposte e crea un form interno
+  answerContainer.innerHTML = "";
+  const form = document.createElement("form");
+  answerContainer.appendChild(form);
 
-    // Svuota il contenitore
-    answerContainer.innerHTML = "";
+  answers.forEach((answer, index) => {
+    const input = document.createElement("input");
+    input.type = "radio";
+    input.name = "answer";
+    input.value = answer;
+    input.id = 'answer-${index}';
+    input.classList.add("inputClick");
 
-    // Crea i pulsanti
-    answers.forEach((answer, index) => {
-
-        const input = document.createElement("input");
-
-        input.type = "radio";
-        input.name = "answer";
-        input.value = answer;
-        input.id = `answer${index}`;
-
-        const label = document.createElement("label");
-
-        label.htmlFor = input.id;
-        label.textContent = answer;
-
-        // Inserisce gli elementi
-        answerContainer.appendChild(input);
-        answerContainer.appendChild(label);
-    });
-}
-function createQuestion() {
-    const currentQ = questions[currentQuestion];
-
-    questionContainer.innerHTML =
-        `<h2>${currentQ.question}</h2>`;
-
-    countEl.innerHTML =
-        `QUESTION ${currentQuestion + 1} <span>/ ${questions.length}</span>`;
-
-    questionCreate();
-}
-let userAnswers = [];
-input.addEventListener("change", function() {
-
-    userAnswers[currentQuestion] = input.value;
-
-});
-//La funzione checkAnswer() confronta la risposta data dall’utente (userAnswer) 
-// con quella corretta (correctAnswer), 
-// e stampa sulla console se la risposta è corretta o sbagliata.
-function checkAnswer() {
-
-    const correctAnswer =
-        questions[currentQuestion].correct_answer;
-
-    const userAnswer =
-        userAnswers[currentQuestion];
-
-    if (userAnswer === correctAnswer) {
-        console.log("Risposta corretta!");
-    } else {
-        console.log("Risposta sbagliata!");
+    // Se l'utente era già tornato o ha già selezionato qualcosa, mantiene la spunta
+    if (userAnswers[currentQuestion] === answer) {
+      input.checked = true;
     }
+
+    const label = document.createElement("label");
+    label.htmlFor = input.id;
+    label.innerHTML = answer;
+
+    // Salva la risposta scelta per la domanda corrente
+    input.addEventListener("change", function () {
+      userAnswers[currentQuestion] = this.value;
+    });
+
+    form.appendChild(input);
+    form.appendChild(label);
+  });
+}
+
+function createQuestion() {
+  const currentQ = questions[currentQuestion];
+
+  if (questionContainer) {
+    questionContainer.innerHTML = <h2>${currentQ.question}</h2>;
+  }
+
+  if (countEl) {
+    countEl.innerHTML = 'QUESTION ${currentQuestion + 1} <span>/ ${questions.length}</span>';
+  }
+
+  // Mostra le risposte subito sotto la domanda
+  questionCreate();
+}
+
+function calculateScore() {
+  let total = 0;
+  questions.forEach((q, idx) => {
+    if (userAnswers[idx] === q.correct_answer) {
+      total++;
+    }
+  });
+  return total;
+}
+
+function showResults() {
+  stopTimer();
+  score = calculateScore();
+
+  if (answerContainer) answerContainer.innerHTML = "";
+  if (countEl) countEl.classList.add("hidden");
+  if (nextBtn) nextBtn.classList.add("hidden");
+
+  // Costruisce l'elenco di tutte le domande con esito e risposta giusta
+  const reviewItemsHtml = questions
+    .map((q, idx) => {
+      const givenAnswer = userAnswers[idx]; // undefined se non ha risposto
+      const isCorrect = givenAnswer === q.correct_answer;
+
+      return `
+        <div class="review-item ${isCorrect ? "correct" : "wrong"}">
+          <p class="review-question"><strong>${idx + 1}.</strong> ${q.question}</p>
+          <p class="review-user">
+            Tua risposta: <strong>${givenAnswer ? givenAnswer : "Nessuna risposta (tempo scaduto)"}</strong>
+            ${isCorrect ? "✅" : "❌"}
+          </p>
+          ${
+            !isCorrect
+              ? <p class="review-correct">Risposta corretta: <strong>${q.correct_answer}</strong></p>
+              : ""
+          }
+        </div>
+      `;
+    })
+    .join("");
+
+  if (questionContainer) {
+    questionContainer.innerHTML = `
+      <div class="results-summary">
+        <h2>Quiz completato!</h2>
+        <p class="score-text">Punteggio: <strong>${score}</strong> su <strong>${questions.length}</strong></p>
+        <div class="review-list">
+          ${reviewItemsHtml}
+        </div>
+        <button type="button" id="restart-btn">Ricomincia quiz</button>
+      </div>
+    `;
+
+    const restartBtn = document.getElementById("restart-btn");
+    if (restartBtn) {
+      restartBtn.addEventListener("click", function () {
+        currentQuestion = 0;
+        score = 0;
+        userAnswers = [];
+        if (countEl) countEl.classList.remove("hidden");
+        if (nextBtn) nextBtn.classList.remove("hidden");
+        createQuestion();
+        startTimer(incrementCurrentQuestion);
+      });
+    }
+  }
+}
+
+function incrementCurrentQuestion() {
+  if (currentQuestion < questions.length - 1) {
+    currentQuestion++;
+    createQuestion();
+    startTimer(incrementCurrentQuestion);
+  } else {
+    showResults();
+  }
 }
