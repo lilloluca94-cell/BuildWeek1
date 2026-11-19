@@ -114,15 +114,16 @@ if (checkbox && proceedBtn) {
   });
 }
 
-// Timer e domande
+// Timer domande e punteggio
 let timeLeft = 30;
 let timerInterval;
 const circleLength = 339.29;
 let currentQuestion = 0;
 let score = 0;
-let userAnswers = []; // Salva la risposta data per ogni indice di domanda
+let userAnswers = []; // Salva la risposta data per ogni di domanda
 
 const questionContainer = document.getElementById("question");
+const answerContainer = document.getElementById("answer");
 const countEl = document.getElementById("countquestion");
 const nextBtn = document.getElementById("next-btn");
 const numberEl = document.getElementById("timer-number");
@@ -152,68 +153,48 @@ function stopTimer() {
   clearInterval(timerInterval);
 }
 
-//CREAZIONE RANDOMICA DEI PULSANTE - LUIGI
-//
-//
-
-//array test per risposte DA SOSTITUIRE CON QUELLO CORRETTO
-let arrQuestion = ["risposta1", "risposta2", "risposta3", "risposta4"];
-
-//selezione form input
-const inputClick = document.getElementsByClassName("inputClick");
-
-//randomizzare arrQuestion
-function randomIndex() {
-  const shuflleArray = (array) => {
-    array.sort(() => Math.random() - 0.5);
-  };
-  return shuflleArray(arrQuestion);
-}
-
-//selezione del contenitore delle domande
-const answerContainer = document.getElementById("answer");
-
-//creazione form e inserimento
-const form = document.createElement("form");
-if (answerContainer) {
-  answerContainer.appendChild(form);
-  //richiamo funzione per generare domande
-  questionCreate();
-}
-
-//funzione per generazione domande
+// Creazione risposte randomiche
 function questionCreate() {
-  randomIndex();
-  form.innerHTML = "";
-  for (i = 0; i < arrQuestion.length; i++) {
-    //creazione e valorizzazione pulsanti
+  if (!answerContainer) return;
+
+  const currentQ = questions[currentQuestion];
+
+  // Randomiza domande
+  const answers = [currentQ.correct_answer, ...currentQ.incorrect_answers];
+  answers.sort(() => Math.random() - 0.5);
+
+  answerContainer.innerHTML = "";
+  const form = document.createElement("form");
+  answerContainer.appendChild(form);
+
+  answers.forEach((answer, index) => {
     const input = document.createElement("input");
     input.type = "radio";
-    input.value = arrQuestion[i];
-    input.id = arrQuestion[i];
-    input.name = "question";
+    input.name = "answer";
+    input.value = answer;
+    input.id = `answer-${index}`;
     input.classList.add("inputClick");
-    //creazione label
-    const label = document.createElement("label");
-    label.innerText = arrQuestion[i];
-    label.id = arrQuestion[i];
 
-    //aggiunta evento click
-    input.addEventListener("click", questionCreate);
+    // Se l'utente era già tornato o ha già selezionato qualcosa, mantiene la spunta
+    if (userAnswers[currentQuestion] === answer) {
+      input.checked = true;
+    }
+
+    const label = document.createElement("label");
+    label.htmlFor = input.id;
+    label.innerHTML = answer;
+
+    // Salva la risposta scelta per la domanda corrente
+    input.addEventListener("change", function () {
+      userAnswers[currentQuestion] = this.value;
+    });
 
     form.appendChild(input);
     form.appendChild(label);
-  }
+  });
 }
 
-// Salva la risposta selezionata dal form di Luigi
-form.addEventListener("change", function (e) {
-  if (e.target.name === "question") {
-    userAnswers[currentQuestion] = e.target.value;
-  }
-});
-
-// Domande (usa arrQuestion e questionCreate di Luigi)
+// Domande
 function createQuestion() {
   const currentQ = questions[currentQuestion];
 
@@ -225,11 +206,8 @@ function createQuestion() {
     countEl.innerHTML = `QUESTION ${currentQuestion + 1} <span>/ ${questions.length}</span>`;
   }
 
-  // Passa le risposte reali della domanda corrente alla funzione di Luigi
-  arrQuestion = [currentQ.correct_answer, ...currentQ.incorrect_answers];
-  if (answerContainer) {
-    questionCreate();
-  }
+  // Mostra le risposte subito sotto la domanda
+  questionCreate();
 }
 
 function calculateScore() {
@@ -246,13 +224,14 @@ function showResults() {
   stopTimer();
   score = calculateScore();
 
-  if (answerContainer) form.innerHTML = "";
+  if (answerContainer) answerContainer.innerHTML = "";
   if (countEl) countEl.classList.add("hidden");
   if (nextBtn) nextBtn.classList.add("hidden");
 
+  // Costruisce l'elenco di tutte le domande con esito e risposta giusta
   const reviewItemsHtml = questions
     .map((q, idx) => {
-      const givenAnswer = userAnswers[idx];
+      const givenAnswer = userAnswers[idx]; // undefined se non ha risposto
       const isCorrect = givenAnswer === q.correct_answer;
 
       return `
@@ -299,6 +278,7 @@ function showResults() {
   }
 }
 
+// Funzione prossima domanda
 function incrementCurrentQuestion() {
   if (currentQuestion < questions.length - 1) {
     currentQuestion++;
@@ -317,3 +297,62 @@ if (questionContainer) {
     nextBtn.addEventListener("click", incrementCurrentQuestion);
   }
 }
+
+/*
+//CREAZIONE RANDOMICA DEI PULSANTE - LUIGI
+//
+//
+
+//array test per risposte DA SOSTITUIRE CON QUELLO CORRETTO
+let arrQuestion = ["risposta1", "risposta2", "risposta3", "risposta4"]
+
+
+//selezione form input
+const inputClick = document.getElementsByClassName("inputClick")
+
+
+
+//randomizzare arrQuestion
+function randomIndex() {
+  const shuflleArray = (array) => {
+    array.sort(() => Math.random() - 0.5)
+  }
+  return shuflleArray(arrQuestion)
+}
+
+//selezione del contenitore delle domande
+const answerContainer = document.getElementById("answer")
+
+//creazione form e inserimento
+const form = document.createElement("form")
+answerContainer.appendChild(form)
+
+//richiamo funzione per generare domande
+questionCreate()
+
+//funzione per generazione domande
+function questionCreate() {
+  randomIndex()
+  form.innerHTML = ""
+  for (i = 0; i < arrQuestion.length; i++) {
+    //creazione e valorizzazione pulsanti
+    const input = document.createElement("input")
+    input.type = "radio"
+    input.value = arrQuestion[i]
+    input.id = arrQuestion[i]
+    input.name = "question"
+    input.classList.add("inputClick")
+    //creazione label
+    const label = document.createElement("label")
+    label.innerText = arrQuestion[i]
+    label.id = arrQuestion[i]
+
+    //aggiunta evento click
+    input.addEventListener("click", questionCreate)
+
+    form.appendChild(input)
+    form.appendChild(label)
+
+  }
+}
+*/
