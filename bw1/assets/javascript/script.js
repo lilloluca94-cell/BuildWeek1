@@ -251,7 +251,7 @@ function questionCreate() {
 //mostrare tutte le domande a fine ed evidenziare quelle sbagliate mostrando la risposta giust
 
 
-const answerContainer = document.getElementById("answer");
+//const answerContainer = document.getElementById("answer");
 //La funzione questionCreate() prende la domanda corrente (currentQ) dalla lista questions
 function questionCreate() {
     const currentQ = questions[currentQuestion];
