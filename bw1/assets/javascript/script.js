@@ -98,7 +98,7 @@ const questions = [
   },
 ];
 
-//consenso per procedere alla scenda paggina
+// Consenso per procedere alla seconda pagina
 const checkbox = document.getElementById("boxPromise");
 const proceedBtn = document.querySelector("#proceed button");
 
@@ -113,17 +113,22 @@ if (checkbox && proceedBtn) {
     }
   });
 }
-// timer e domande 
+
+// Timer e domande
 let timeLeft = 30;
 let timerInterval;
 const circleLength = 339.29;
 let currentQuestion = 0;
+let score = 0;
+let userAnswers = []; // Salva la risposta data per ogni indice di domanda
+
 const questionContainer = document.getElementById("question");
 const countEl = document.getElementById("countquestion");
 const nextBtn = document.getElementById("next-btn");
 const numberEl = document.getElementById("timer-number");
 const circleEl = document.getElementById("timer-circle");
-// funzione timer
+
+// Funzione timer
 function startTimer(onTimeUp) {
   clearInterval(timerInterval);
   timeLeft = 30;
@@ -142,17 +147,76 @@ function startTimer(onTimeUp) {
     }
   }, 1000);
 }
+
 function stopTimer() {
   clearInterval(timerInterval);
 }
-if (numberEl) {
-  startTimer(function () {
-    console.log("Tempo scaduto!");
-  });
+
+//CREAZIONE RANDOMICA DEI PULSANTE - LUIGI
+//
+//
+
+//array test per risposte DA SOSTITUIRE CON QUELLO CORRETTO
+let arrQuestion = ["risposta1", "risposta2", "risposta3", "risposta4"];
+
+//selezione form input
+const inputClick = document.getElementsByClassName("inputClick");
+
+//randomizzare arrQuestion
+function randomIndex() {
+  const shuflleArray = (array) => {
+    array.sort(() => Math.random() - 0.5);
+  };
+  return shuflleArray(arrQuestion);
 }
-// domande 
+
+//selezione del contenitore delle domande
+const answerContainer = document.getElementById("answer");
+
+//creazione form e inserimento
+const form = document.createElement("form");
+if (answerContainer) {
+  answerContainer.appendChild(form);
+  //richiamo funzione per generare domande
+  questionCreate();
+}
+
+//funzione per generazione domande
+function questionCreate() {
+  randomIndex();
+  form.innerHTML = "";
+  for (i = 0; i < arrQuestion.length; i++) {
+    //creazione e valorizzazione pulsanti
+    const input = document.createElement("input");
+    input.type = "radio";
+    input.value = arrQuestion[i];
+    input.id = arrQuestion[i];
+    input.name = "question";
+    input.classList.add("inputClick");
+    //creazione label
+    const label = document.createElement("label");
+    label.innerText = arrQuestion[i];
+    label.id = arrQuestion[i];
+
+    //aggiunta evento click
+    input.addEventListener("click", questionCreate);
+
+    form.appendChild(input);
+    form.appendChild(label);
+  }
+}
+
+// Salva la risposta selezionata dal form di Luigi
+form.addEventListener("change", function (e) {
+  if (e.target.name === "question") {
+    userAnswers[currentQuestion] = e.target.value;
+  }
+});
+
+// Domande (usa arrQuestion e questionCreate di Luigi)
 function createQuestion() {
   const currentQ = questions[currentQuestion];
+
   if (questionContainer) {
     questionContainer.innerHTML = `<h2>${currentQ.question}</h2>`;
   }
@@ -160,151 +224,12 @@ function createQuestion() {
   if (countEl) {
     countEl.innerHTML = `QUESTION ${currentQuestion + 1} <span>/ ${questions.length}</span>`;
   }
-}
-//function prossima domanda 
-function incrementCurrentQuestion() {
-  if (currentQuestion < questions.length - 1) {
-    currentQuestion++;
-    createQuestion();
-    startTimer(incrementCurrentQuestion);
-  } else {
-    stopTimer(); // Ferma il timer all'ultima domanda
-    if (questionContainer) {
-      questionContainer.innerHTML = `<h2>Quiz completato!</h2>`;
-    }
-    if (nextBtn) {
-      nextBtn.classList.add("hidden");
-    }
+
+  // Passa le risposte reali della domanda corrente alla funzione di Luigi
+  arrQuestion = [currentQ.correct_answer, ...currentQ.incorrect_answers];
+  if (answerContainer) {
+    questionCreate();
   }
-}
-if (questionContainer) {
-  createQuestion();
-  startTimer(incrementCurrentQuestion);
-  if (nextBtn) {
-    nextBtn.addEventListener("click", incrementCurrentQuestion);
-  }
-}
-
-
-
-
-//CREAZIONE RANDOMICA DEI PULSANTE - LUIGI
-//
-//
-
-//array test per risposte DA SOSTITUIRE CON QUELLO CORRETTO
-let arrQuestion = ["risposta1", "risposta2", "risposta3", "risposta4"]
-
-
-//selezione form input
-const inputClick = document.getElementsByClassName("inputClick")
-
-
-
-//randomizzare arrQuestion
-function randomIndex() {
-  const shuflleArray = (array) => {
-    array.sort(() => Math.random() - 0.5)
-  }
-  return shuflleArray(arrQuestion)
-}
-
-//selezione del contenitore delle domande
-const answerContainer = document.getElementById("answer")
-
-//creazione form e inserimento
-const form = document.createElement("form")
-answerContainer.appendChild(form)
-
-//richiamo funzione per generare domande
-questionCreate()
-
-//funzione per generazione domande
-function questionCreate() {
-  randomIndex()
-  form.innerHTML = ""
-  for (i = 0; i < arrQuestion.length; i++) {
-    //creazione e valorizzazione pulsanti
-    const input = document.createElement("input")
-    input.type = "radio"
-    input.value = arrQuestion[i]
-    input.id = arrQuestion[i]
-    input.name = "question"
-    input.classList.add("inputClick")
-    //creazione label
-    const label = document.createElement("label")
-    label.innerText = arrQuestion[i]
-    label.id = arrQuestion[i]
-
-    //aggiunta evento click
-    input.addEventListener("click", questionCreate)
-
-    form.appendChild(input)
-    form.appendChild(label)
-
-  }
-}
-
-
-// restanti da fare metter le risposte sotto la domanda
-// stilizzare tramite il css la seconda pagina quindi la parte del quiz
-//mostrare tutte le domande a fine ed evidenziare quelle sbagliate mostrando la risposta giust
-
-let score = 0;
-let userAnswers = []; // Salva la risposta data per ogni indice di domanda
-
-function questionCreate() {
-  const currentQ = questions[currentQuestion];
-
-  // Unisce risposta corretta e sbagliate e le mescola
-  const answers = [currentQ.correct_answer, ...currentQ.incorrect_answers];
-  answers.sort(() => Math.random() - 0.5);
-
-  // Svuota il contenitore delle risposte e crea un form interno
-  answerContainer.innerHTML = "";
-  const form = document.createElement("form");
-  answerContainer.appendChild(form);
-
-  answers.forEach((answer, index) => {
-    const input = document.createElement("input");
-    input.type = "radio";
-    input.name = "answer";
-    input.value = answer;
-    input.id = 'answer-${index}';
-    input.classList.add("inputClick");
-
-    // Se l'utente era già tornato o ha già selezionato qualcosa, mantiene la spunta
-    if (userAnswers[currentQuestion] === answer) {
-      input.checked = true;
-    }
-
-    const label = document.createElement("label");
-    label.htmlFor = input.id;
-    label.innerHTML = answer;
-
-    // Salva la risposta scelta per la domanda corrente
-    input.addEventListener("change", function () {
-      userAnswers[currentQuestion] = this.value;
-    });
-
-    form.appendChild(input);
-    form.appendChild(label);
-  });
-}
-
-function createQuestion() {
-  const currentQ = questions[currentQuestion];
-
-  if (questionContainer) {
-    questionContainer.innerHTML = '<h2>${currentQ.question}</h2>';
-  }
-
-  if (countEl) {
-    countEl.innerHTML = 'QUESTION ${currentQuestion + 1} <span>/ ${questions.length}</span>';
-  }
-
-  // Mostra le risposte subito sotto la domanda
-  questionCreate();
 }
 
 function calculateScore() {
@@ -321,14 +246,13 @@ function showResults() {
   stopTimer();
   score = calculateScore();
 
-  if (answerContainer) answerContainer.innerHTML = "";
+  if (answerContainer) form.innerHTML = "";
   if (countEl) countEl.classList.add("hidden");
   if (nextBtn) nextBtn.classList.add("hidden");
 
-  // Costruisce l'elenco di tutte le domande con esito e risposta giusta
   const reviewItemsHtml = questions
     .map((q, idx) => {
-      const givenAnswer = userAnswers[idx]; // undefined se non ha risposto
+      const givenAnswer = userAnswers[idx];
       const isCorrect = givenAnswer === q.correct_answer;
 
       return `
@@ -385,69 +309,11 @@ function incrementCurrentQuestion() {
   }
 }
 
-//CREAZIONE RANDOMICA DEI PULSANTE - LUIGI
-//
-//
-
-//array test per risposte DA SOSTITUIRE CON QUELLO CORRETTO
-let arrQuestion = ["risposta1", "risposta2", "risposta3", "risposta4"]
-
-
-//selezione form input
-const inputClick = document.getElementsByClassName("inputClick")
-
-
-
-//randomizzare arrQuestion
-function randomIndex() {
-  const shuflleArray = (array) => {
-    array.sort(() => Math.random() - 0.5)
-  }
-  return shuflleArray(arrQuestion)
-}
-
-//selezione del contenitore delle domande
-const answerContainer = document.getElementById("answer")
-
-//creazione form e inserimento
-const form = document.createElement("form")
-answerContainer.appendChild(form)
-
-//richiamo funzione per generare domande
-questionCreate()
-
-//funzione per generazione domande
-function questionCreate() {
-  randomIndex()
-  form.innerHTML = ""
-  for (i = 0; i < arrQuestion.length; i++) {
-    //creazione e valorizzazione pulsanti
-    const input = document.createElement("input")
-    input.type = "radio"
-    input.value = arrQuestion[i]
-    input.id = arrQuestion[i]
-    input.name = "question"
-    input.classList.add("inputClick")
-    //creazione label
-    const label = document.createElement("label")
-    label.innerText = arrQuestion[i]
-    label.id = arrQuestion[i]
-
-    //aggiunta evento click
-    input.addEventListener("click", questionCreate)
-
-    form.appendChild(input)
-    form.appendChild(label)
-
+// Avvio quiz nella seconda pagina
+if (questionContainer) {
+  createQuestion();
+  startTimer(incrementCurrentQuestion);
+  if (nextBtn) {
+    nextBtn.addEventListener("click", incrementCurrentQuestion);
   }
 }
-
-
-
-
-
-
-
-
-
-
