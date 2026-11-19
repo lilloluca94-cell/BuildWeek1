@@ -205,9 +205,13 @@ function createQuestion() {
   if (countEl) {
     countEl.innerHTML = `QUESTION ${currentQuestion + 1} <span>/ ${questions.length}</span>`;
   }
+<<<<<<< HEAD
 
   // Mostra le risposte subito sotto la domanda
   questionCreate();
+=======
+  nextQuestion(currentQ)
+>>>>>>> f37d4c9 (add answer buttons and CSS styles)
 }
 
 function calculateScore() {
@@ -285,7 +289,20 @@ function incrementCurrentQuestion() {
     createQuestion();
     startTimer(incrementCurrentQuestion);
   } else {
+<<<<<<< HEAD
     showResults();
+=======
+    stopTimer(); // Ferma  timer 
+    if (questionContainer) {
+      questionContainer.innerHTML = `<h2>Quiz completato!</h2>`;
+    }
+    if (document.getElementById("answer")) {
+      document.getElementById("answer").innerHTML = ""
+    }
+    if (nextBtn) {
+      nextBtn.style.display = "none";
+    }
+>>>>>>> f37d4c9 (add answer buttons and CSS styles)
   }
 }
 
@@ -298,6 +315,7 @@ if (questionContainer) {
   }
 }
 
+<<<<<<< HEAD
 /*
 //CREAZIONE RANDOMICA DEI PULSANTE - LUIGI
 //
@@ -356,3 +374,49 @@ function questionCreate() {
   }
 }
 */
+=======
+// const questionContainer = document.getElementById("question");
+//## risposte alle domande ##//
+// const answerContainer = document.getElementById("answer")
+function nextQuestion(currentQ) {
+  // id container risposte
+  // console.log(answer1)
+  // unisci tutte le risposte
+  const answerContainer = document.getElementById("answer")
+  const allAnswer = [
+    currentQ.incorrect_answers,    //array con tutte le risposte
+    currentQ.correct_answer
+  ]
+  // mescola risposte in modo casuale 
+  allAnswer.sort(() => Math.random() - 0.5)
+
+  answerContainer.innerHTML = "" //svuota
+  allAnswer.forEach((answerText) => {
+    const btn = document.createElement("button") //crea button per ogni risposta 
+    btn.innerText = answerText
+    btn.classList.add("answer-btn")
+
+    btn.addEventListener("click", () => {
+      const allButton = answerContainer.querySelectorAll("button")
+      allButton.forEach((b) =>  b.disabled = true)
+
+      if (answerText === currentQ.correct_answer) {
+        btn.style.backgroundColor = "green"
+      } else {
+        btn.style.backgroundColor = "red"
+
+      }
+    
+    });
+  answerContainer.appendChild(btn)
+})
+
+}
+nextQuestion()
+
+
+// restanti da fare metter le risposte sotto la domanda
+//randomizzare l ordine delle risposte
+// stilizzare tramite il css la seconda pagina quindi la parte del quiz
+//mostrare tutte le domande a fine ed evidenziare quelle sbagliate mostrando la risposta giusta
+>>>>>>> f37d4c9 (add answer buttons and CSS styles)

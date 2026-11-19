@@ -239,6 +239,7 @@ header {
     line-height: 1.05;
     color: #ffffff;
 }
+<<<<<<< HEAD
 #question {
     text-align: center;
     margin: 60px auto 40px auto;
@@ -276,3 +277,25 @@ header {
     font-weight: 700;
 }
 
+=======
+
+.answer-btn {
+
+    padding: 14px 28px;
+    border-radius: 999px;
+    border: 1.5px solid rgba(255, 255, 255, 0.35);
+   background-color:  rgba(255, 255, 255, 0.08);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 16px;
+    color: #ffffff;
+}
+
+#answer {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(220px, 1fr));
+    gap: 16px 24px;
+    max-width: 760px;
+    margin: 24px auto;
+}
+>>>>>>> f37d4c9 (add answer buttons and CSS styles)
