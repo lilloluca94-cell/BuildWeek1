@@ -296,7 +296,7 @@ function createQuestion() {
   const currentQ = questions[currentQuestion];
 
   if (questionContainer) {
-    questionContainer.innerHTML = <h2>${currentQ.question}</h2>;
+    questionContainer.innerHTML = '<h2>${currentQ.question}</h2>';
   }
 
   if (countEl) {
@@ -340,7 +340,7 @@ function showResults() {
           </p>
           ${
             !isCorrect
-              ? <p class="review-correct">Risposta corretta: <strong>${q.correct_answer}</strong></p>
+              ? `<p class="review-correct">Risposta corretta: <strong>${q.correct_answer}</strong></p>`
               : ""
           }
         </div>
