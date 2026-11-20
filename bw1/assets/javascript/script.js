@@ -146,7 +146,7 @@ function startTimer(onTimeUp) {
       clearInterval(timerInterval);
       if (onTimeUp) onTimeUp();
     }
-  }, 10000);
+  }, 1000);
 }
 
 function stopTimer() {
