@@ -125,7 +125,7 @@ let userAnswers = []; // Salva la risposta data per ogni di domanda
 const questionContainer = document.getElementById("question");
 const answerContainer = document.getElementById("answer");
 const countEl = document.getElementById("countquestion");
-const nextBtn = document.getElementById("next-btn");
+const answer = document.getElementById("answer");
 const numberEl = document.getElementById("timer-number");
 const circleEl = document.getElementById("timer-circle");
 
@@ -208,7 +208,6 @@ function createQuestion() {
 
   // Mostra le risposte subito sotto la domanda
   questionCreate();
-  nextQuestion(currentQ)
 }
 
 function calculateScore() {
@@ -227,7 +226,7 @@ function showResults() {
 
   if (answerContainer) answerContainer.innerHTML = "";
   if (countEl) countEl.classList.add("hidden");
-  if (nextBtn) nextBtn.classList.add("hidden");
+  if (answer) answer.classList.add("hidden");
 
   // Costruisce l'elenco di tutte le domande con esito e risposta giusta
   const reviewItemsHtml = questions
@@ -271,7 +270,7 @@ function showResults() {
         score = 0;
         userAnswers = [];
         if (countEl) countEl.classList.remove("hidden");
-        if (nextBtn) nextBtn.classList.remove("hidden");
+        if (answer) answer.classList.remove("hidden");
         createQuestion();
         startTimer(incrementCurrentQuestion);
       });
@@ -287,16 +286,6 @@ function incrementCurrentQuestion() {
     startTimer(incrementCurrentQuestion);
   } else {
     showResults();
-    stopTimer(); // Ferma  timer 
-    if (questionContainer) {
-      questionContainer.innerHTML = `<h2>Quiz completato!</h2>`;
-    }
-    if (document.getElementById("answer")) {
-      document.getElementById("answer").innerHTML = ""
-    }
-    if (nextBtn) {
-      nextBtn.style.display = "none";
-    }
   }
 }
 
@@ -304,66 +293,7 @@ function incrementCurrentQuestion() {
 if (questionContainer) {
   createQuestion();
   startTimer(incrementCurrentQuestion);
-  if (nextBtn) {
-    nextBtn.addEventListener("click", incrementCurrentQuestion);
+  if (answer) {
+    answer.addEventListener("click", incrementCurrentQuestion);
   }
 }
-
-/*
-//CREAZIONE RANDOMICA DEI PULSANTE - LUIGI
-//
-//
-
-//array test per risposte DA SOSTITUIRE CON QUELLO CORRETTO
-let arrQuestion = ["risposta1", "risposta2", "risposta3", "risposta4"]
-
-
-//selezione form input
-const inputClick = document.getElementsByClassName("inputClick")
-
-
-
-//randomizzare arrQuestion
-function randomIndex() {
-  const shuflleArray = (array) => {
-    array.sort(() => Math.random() - 0.5)
-  }
-  return shuflleArray(arrQuestion)
-}
-
-//selezione del contenitore delle domande
-const answerContainer = document.getElementById("answer")
-
-//creazione form e inserimento
-const form = document.createElement("form")
-answerContainer.appendChild(form)
-
-//richiamo funzione per generare domande
-questionCreate()
-
-//funzione per generazione domande
-function questionCreate() {
-  randomIndex()
-  form.innerHTML = ""
-  for (i = 0; i < arrQuestion.length; i++) {
-    //creazione e valorizzazione pulsanti
-    const input = document.createElement("input")
-    input.type = "radio"
-    input.value = arrQuestion[i]
-    input.id = arrQuestion[i]
-    input.name = "question"
-    input.classList.add("inputClick")
-    //creazione label
-    const label = document.createElement("label")
-    label.innerText = arrQuestion[i]
-    label.id = arrQuestion[i]
-
-    //aggiunta evento click
-    input.addEventListener("click", questionCreate)
-
-    form.appendChild(input)
-    form.appendChild(label)
-
-  }
-}
-*/
