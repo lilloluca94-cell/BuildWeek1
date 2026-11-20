@@ -239,7 +239,6 @@ header {
     line-height: 1.05;
     color: #ffffff;
 }
-<<<<<<< HEAD
 #question {
     text-align: center;
     margin: 60px auto 40px auto;
@@ -277,7 +276,6 @@ header {
     font-weight: 700;
 }
 
-=======
 
 .answer-btn {
 
@@ -298,4 +296,3 @@ header {
     max-width: 760px;
     margin: 24px auto;
 }
->>>>>>> f37d4c9 (add answer buttons and CSS styles)
