@@ -146,7 +146,7 @@ function startTimer(onTimeUp) {
       clearInterval(timerInterval);
       if (onTimeUp) onTimeUp();
     }
-  }, 1000);
+  }, 10000);
 }
 
 function stopTimer() {
@@ -241,11 +241,10 @@ function showResults() {
             Tua risposta: <strong>${givenAnswer ? givenAnswer : "Nessuna risposta (tempo scaduto)"}</strong>
             ${isCorrect ? "✅" : "❌"}
           </p>
-          ${
-            !isCorrect
-              ? `<p class="review-correct">Risposta corretta: <strong>${q.correct_answer}</strong></p>`
-              : ""
-          }
+          ${!isCorrect
+          ? `<p class="review-correct">Risposta corretta: <strong>${q.correct_answer}</strong></p>`
+          : ""
+        }
         </div>
       `;
     })
