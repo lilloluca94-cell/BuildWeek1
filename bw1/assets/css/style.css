@@ -175,15 +175,43 @@ main {
     color: inherit;
 }
 
-#proceed button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 0 42px rgba(0, 255, 255, 0.95);
+#proceed button.btn-locked {
+    opacity: 0.35;
+    box-shadow: none;
+    cursor: not-allowed;
 }
 
-#proceed button:active {
-    transform: translateY(0);
+#proceed button.btn-locked:hover {
+    transform: none;
+    box-shadow: none;
 }
 
+.hidden-error {
+    visibility: hidden;
+    color: #D20094;
+    font-size: 14px;
+    font-weight: 600;
+    margin-top: 12px;
+}
+
+.hidden-error.show {
+    visibility: visible;
+}
+
+#promise.error input[type="checkbox"] {
+    border-color: #D20094;
+    box-shadow: 0 0 12px rgba(210, 0, 148, 0.8);
+}
+
+#promise.shake {
+    animation: shake 0.3s ease;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-6px); }
+    75% { transform: translateX(6px); }
+}
 header {
     display: flex;
     justify-content: space-between;

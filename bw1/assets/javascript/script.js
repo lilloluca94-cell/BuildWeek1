@@ -101,18 +101,32 @@ const questions = [
 // Consenso per procedere alla seconda pagina
 const checkbox = document.getElementById("boxPromise");
 const proceedBtn = document.querySelector("#proceed button");
-
+const promiseBox = document.getElementById("promise");
+const promiseError = document.getElementById("promise-error");
 if (checkbox && proceedBtn) {
-  proceedBtn.disabled = true;
-  checkbox.addEventListener("change", function () {
-    proceedBtn.disabled = !checkbox.checked;
-  });
-  proceedBtn.addEventListener("click", function () {
+  proceedBtn.classList.add("btn-locked");
+  checkbox.addEventListener("change",function() {
     if (checkbox.checked) {
-      window.location.href = "./secondapagina.html";
+      proceedBtn.classList.remove("btn-locked");
+      promiseBox.classList.remove("error");
+      if (promiseError) promiseError.classList.remove("show");
+    } else {
+      proceedBtn.classList.add("btn-locked");
+    }
+  });
+  proceedBtn.addEventListener("click",function(){
+    if(checkbox.checked){
+      window.location.href= "./secondapagina.html";
+    } else {
+      promiseBox.classList.add("error", "shake");
+      if(promiseError) promiseError.classList.add("show");
+      setTimeout(function(){
+        promiseBox.classList.remove("shake");
+      },300);
     }
   });
 }
+
 
 // Timer domande e punteggio
 let timeLeft = 30;
