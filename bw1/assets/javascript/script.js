@@ -105,7 +105,7 @@ const promiseBox = document.getElementById("promise");
 const promiseError = document.getElementById("promise-error");
 if (checkbox && proceedBtn) {
   proceedBtn.classList.add("btn-locked");
-  checkbox.addEventListener("change",function() {
+  checkbox.addEventListener("change", function () {
     if (checkbox.checked) {
       proceedBtn.classList.remove("btn-locked");
       promiseBox.classList.remove("error");
@@ -114,15 +114,15 @@ if (checkbox && proceedBtn) {
       proceedBtn.classList.add("btn-locked");
     }
   });
-  proceedBtn.addEventListener("click",function(){
-    if(checkbox.checked){
-      window.location.href= "./secondapagina.html";
+  proceedBtn.addEventListener("click", function () {
+    if (checkbox.checked) {
+      window.location.href = "./secondapagina.html";
     } else {
       promiseBox.classList.add("error", "shake");
-      if(promiseError) promiseError.classList.add("show");
-      setTimeout(function(){
+      if (promiseError) promiseError.classList.add("show");
+      setTimeout(function () {
         promiseBox.classList.remove("shake");
-      },300);
+      }, 300);
     }
   });
 }
@@ -186,7 +186,7 @@ function questionCreate() {
     input.type = "radio";
     input.name = "answer";
     input.value = answer;
-    input.id = `answer-${index}`;
+    input.id = answer - `${index}`;
     input.classList.add("inputClick");
 
     // Se l'utente era già tornato o ha già selezionato qualcosa, mantiene la spunta
@@ -201,6 +201,9 @@ function questionCreate() {
     // Salva la risposta scelta per la domanda corrente
     input.addEventListener("change", function () {
       userAnswers[currentQuestion] = this.value;
+      incrementCurrentQuestion();     //#####--------->ho richiamato la funzione per incremtare la risposta per far in modo che al click 
+      //sul pulsante si richiami e tolte da in fondo alla pagina nell'if perchè altrimenti non si 
+      //visualizzavano òe risposte corrette
     });
 
     form.appendChild(input);
@@ -253,7 +256,6 @@ function showResults() {
           <p class="review-question"><strong>${idx + 1}.</strong> ${q.question}</p>
           <p class="review-user">
             Tua risposta: <strong>${givenAnswer ? givenAnswer : "Nessuna risposta (tempo scaduto)"}</strong>
-            ${isCorrect ? "✅" : "❌"}
           </p>
           ${!isCorrect
           ? `<p class="review-correct">Risposta corretta: <strong>${q.correct_answer}</strong></p>`
@@ -270,13 +272,16 @@ function showResults() {
         <h2>Quiz completato!</h2>
         <p class="score-text">Punteggio: <strong>${score}</strong> su <strong>${questions.length}</strong></p>
         <div class="review-list">
-          ${reviewItemsHtml}
-        </div>
-        <button type="button" id="restart-btn">Ricomincia quiz</button>
-      </div>
-    `;
+          ${reviewItemsHtml}`
 
-    const restartBtn = document.getElementById("restart-btn");
+    //-------> HO ELIMINATO IL PULSANTE PER RIPETERE IL TEST
+
+    /*</div>
+    <button type="button" id="restart-btn">Ricomincia quiz</button>
+  </div>
+`;*/
+
+    /*const restartBtn = document.getElementById("restart-btn");
     if (restartBtn) {
       restartBtn.addEventListener("click", function () {
         currentQuestion = 0;
@@ -287,7 +292,7 @@ function showResults() {
         createQuestion();
         startTimer(incrementCurrentQuestion);
       });
-    }
+    }*/
   }
 }
 
@@ -306,7 +311,4 @@ function incrementCurrentQuestion() {
 if (questionContainer) {
   createQuestion();
   startTimer(incrementCurrentQuestion);
-  if (answer) {
-    answer.addEventListener("click", incrementCurrentQuestion);
-  }
 }
