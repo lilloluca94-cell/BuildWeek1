@@ -201,9 +201,7 @@ function questionCreate() {
     // Salva la risposta scelta per la domanda corrente
     input.addEventListener("change", function () {
       userAnswers[currentQuestion] = this.value;
-      incrementCurrentQuestion();     //#####--------->ho richiamato la funzione per incremtare la risposta per far in modo che al click 
-      //sul pulsante si richiami e tolte da in fondo alla pagina nell'if perchè altrimenti non si 
-      //visualizzavano òe risposte corrette
+      incrementCurrentQuestion();
     });
 
     form.appendChild(input);
@@ -273,26 +271,6 @@ function showResults() {
         <p class="score-text">Punteggio: <strong>${score}</strong> su <strong>${questions.length}</strong></p>
         <div class="review-list">
           ${reviewItemsHtml}`
-
-    //-------> HO ELIMINATO IL PULSANTE PER RIPETERE IL TEST
-
-    /*</div>
-    <button type="button" id="restart-btn">Ricomincia quiz</button>
-  </div>
-`;*/
-
-    /*const restartBtn = document.getElementById("restart-btn");
-    if (restartBtn) {
-      restartBtn.addEventListener("click", function () {
-        currentQuestion = 0;
-        score = 0;
-        userAnswers = [];
-        if (countEl) countEl.classList.remove("hidden");
-        if (answer) answer.classList.remove("hidden");
-        createQuestion();
-        startTimer(incrementCurrentQuestion);
-      });
-    }*/
   }
 }
 
